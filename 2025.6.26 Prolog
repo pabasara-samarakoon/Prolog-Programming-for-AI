@@ -1,0 +1,191 @@
+-------------------------------------------------------------------------------------------------------------
+likes(alice,apples).
+likes(bob,bananas).
+likes(charlie,cherries).
+
+//Queries
+likes(_, bananas). => true
+
+--------------------------------------------------------------------------------------------------------------
+fruit_lover(Person) :- likes(Person,_).
+//Queries
+likes(_, bananas).
+false
+likes(_, bananas).
+1true
+fruit_lover(alice).
+1true
+fruit_lover(_).
+1true
+fruit_lover(apples).
+false
+likes(_,apples).
+1true
+likes(apples,_).
+false
+likes(bob,_).
+1true
+likes(_,bob).
+false
+-------------------------------------------------------------------------------------------------------------------
+male(chrishmika).
+female(pabasara).
+female(kaveesha).
+female(damayanthi).
+female(lakshani).
+
+%parent facts
+parent(ushan,pabasara).
+parent(ushan,achintha).
+parent(pabasara,damaynthi).
+parent(pabasara,chrishmika).
+parent(achintha,lakshani).
+parent(kaveesha,ushan).
+parent(kavinda,ushan).
+
+%rule for grandmother and grandfather?
+%mother and father
+is_father(P) :- parent(P,_),male(P).
+is_mother(P) :- parent(P,_),female(P).
+%sibling
+sibling(X, Y) :- parent(Z, X),parent(Z, Y),X\=Y.
+%grandparent
+is_grandmother(X,Y) :- parent(X,Z),parent(Z,Y),female(X).
+is_grandfather(X,Y) :- parent(X,Z),parent(Z,Y),male(X).
+
+grandmother(Person) :- parent(Person,A),parent(A,_),female(Person).
+grandfather(Person) :- parent(Person,A),parent(A,_),male(Person).
+
+//Queries
+is_grandmother(ushan,X).
+false
+is_grandmother(kavinda,X).
+false
+is_grandmother(kaveesha,X).
+X = pabasara
+is_grandfather(kavinda,X).
+X = pabasara
+is_grandfather(_,achintha).
+true
+is_grandfather(kavinda,achintha).
+true
+is_grandfather(kavinda,lakshani).
+false
+is_grandfather(ushan,lakshani).
+true
+grandmother(_).
+true
+grandmother(lakshani).
+false
+is_father(ushan).
+true
+is_father(_).
+1true
+is_father(lakshani).
+false
+is_mother(lakshani).
+false
+is_mother(kaveesha).
+true
+grandmother(ushan).
+true
+sibling(damayanthi,chrishmika).
+false
+sibling(damayanthi,chrishmika).
+false
+sibling(damayanthi,ushan).
+false
+sibling(pabasara,achintha).
+true
+sibling(damaynthi,chrishmika).
+true
+sibling(damaynthi,kaveesha).
+false
+sibling(_,kaveesha).
+false
+sibling(A,kaveesha).
+false
+sibling(pabasara,A).
+A = achintha
+is_mother(pabasara).
+1true
+2true
+is_mother(A).
+A = pabasara
+A = pabasara
+A = kaveesha
+false
+is_mother(kaveesha).
+1true
+is_mother(A).
+A = pabasara
+A = pabasara
+A = kaveesha
+false
+is_father(A).
+A = ushan
+A = ushan
+A = achintha
+A = kavinda
+is_grandmother(kaveesha,A).
+A = pabasara
+A = achintha
+is_grandmother(A,damaynthi).
+false
+is_grandmother(A,achintha).
+A = kaveesha
+false
+is_grandfather(A,achintha).
+A = kavinda
+is_grandfather(chrishmika,A).
+false
+is_grandfather(kavinda,A).
+A = pabasara
+A = achintha
+is_grandfather(X,A).
+A = damaynthi,
+X = ushan
+A = chrishmika,
+X = ushan
+A = lakshani,
+X = ushan
+A = pabasara,
+X = kavinda
+A = achintha,
+X = kavinda
+is_grandfather(X,_).
+X = ushan
+X = ushan
+X = ushan
+X = kavinda
+X = kavinda
+is_grandmother(X,_).
+X = kaveesha
+X = kaveesha
+false
+is_mother(X).
+X = pabasara
+X = pabasara
+X = kaveesha
+false
+is_father(X).
+X = ushan
+X = ushan
+X = achintha
+X = kavinda
+sibling(X,_).
+X = pabasara
+X = achintha
+X = damaynthi
+X = chrishmika
+false
+grandmother(X).
+X = kaveesha
+X = kaveesha
+false
+grandfather(Y).
+Y = ushan
+Y = ushan
+Y = ushan
+Y = kavinda
+Y = kavinda
