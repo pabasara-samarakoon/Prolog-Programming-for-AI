@@ -1,0 +1,20 @@
+//
+bigger(elephant, horse).
+bigger(horse, donkey).
+bigger(donkey, dog).
+bigger(donkey, monkey).
+//
+is_bigger(X, Y) :- bigger(X, Y).
+is_bigger(X, Y) :- bigger(X, Z), is_bigger(Z, Y).
+
+//Queries
+is_bigger(elephant, monkey). =>true
+is_bigger(X, donkey). =>X = horse
+is_bigger(donkey, X), is_bigger(X, monkey) =>false
+is_bigger(X,_temp). =>X = elephant,
+                      _temp = horse
+is_bigger(Hello,donkey). =>Hello = horse
+is_bigger(_v,donkey). =>_v = horse
+                        _v = elephant
+is_bigger(_,donkey). => true
+is_bigger(_,elephant). =>false
