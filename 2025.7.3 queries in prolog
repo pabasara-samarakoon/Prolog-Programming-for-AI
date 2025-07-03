@@ -1,0 +1,258 @@
+%Queiries in Prolog--------------------------------
+%Students
+student(tharu).
+student(hiru).
+student(paba).
+
+%Courses
+course(csc301s3).
+course(csc310s2).
+course(csc209s4).
+
+%Instructors
+instructor(prof_ramanan).
+instructor(dr_kokul).
+
+%teaches relationship
+teaches(prof_ramanan ,csc301s3).
+teaches(dr_kokul ,csc310s2).
+teaches(prof_ramanan ,csc209s4).
+
+%Enrollemnet
+entrolled(tharu,csc310s2).
+entrolled(hiru,csc310s2).
+entrolled(tharu,csc209s4).
+entrolled(paba,csc301s3).
+
+%marks
+grade(tharu,csc310s2,85).
+grade(hiru,csc310s2,60).
+grade(paba,csc301s3,92).
+grade(tharu,csc209s4,36).
+      
+%  50<grade-> pass student
+passed(Student,Course) :- grade(Student,Course,Mark), Mark>=50.
+
+%variables starts with capital letters 
+%atoms and facts values write in simple letters
+
+% 50>grade-> fail student
+failed(Student,Course) :- grade(Student,Course,Mark), Mark<50.
+
+-------------------------------------Queries-------------------------------------------------
+passed(tharu,csc209s4).
+false
+
+passed(X,csc310s2).
+X = tharu
+X = hiru
+
+passed(X,Y).
+X = tharu,
+Y = csc310s2
+X = hiru,
+Y = csc310s2
+X = paba,
+Y = csc301s3
+false
+
+failed(X,Y).
+X = tharu,
+Y = csc209s4
+
+failed(paba,Y).
+false
+
+passed(paba,Y).
+Y = csc301s3
+
+--------------------------------------------------------------------------------------------
+
+%who teaches a student in specific course     
+teaches_student(Teacher,Student) :- teaches(Teacher,Course) , entrolled(Student,Course).
+
+
+
+%=================== Built-in-Predicates in Prolog ========================
+%  = unification(matches two terms , assign values to match ,tries to makes two terms equal
+% \= not unifible
+% == syntactic equality(no variable binding) , comparing without assigning , check if two terms are already 
+% \== syntatic inequality
+
+%3 ==3.
+%x == x.
+%x = 3 , x==3.
+%x==3. %x is now bount to 3
+%x \== 3.
+%x = 3 , % x is unbound and == does not bind it
+
+ 3 ==3.
+1true
+x == x.
+1true
+x = 3 , x==3.
+false
+x==3.
+false
+x \== 3.
+1true
+x = 3
+false
+x \== 3.
+
+x = 3
+
+--------------------------------------------------------------------------------------
+likes(alice,apple).
+likes(bob,banana).
+likes(charlie,apple).
+
+%who likes the same fruit as someone else ? using unification
+same_taste(P1,P2) :- likes(P1,Fruit) , likes(P2,Fruit) , P1 \= P2. %not the same person - unifiable but different
+
+%check if two people like the same fruit but are the same person ()
+same_person_same_taste(P1,P2) :- likes(P1,Fruit) , likes(P2,Fruit) , P1 == P2. %strict identify
+
+%fail when comparing with \== (not strictly identical)
+different_individuals(Person1,Person2) :- Person1 \== Person2.
+
+---------------------------------------------------
+same_taste(X,Y).
+X = alice,
+Y = charlie
+X = charlie,
+Y = alice
+false
+same_person_same_taste(X,Y).
+X = Y, Y = alice
+X = Y, Y = bob
+X = Y, Y = charlie
+same_person_same_taste(paba,Y).
+false
+same_person_same_taste(alice,Y).
+Y = alice
+false
+same_person_same_taste(Y,alice).
+Y = alice
+false
+different_individuals(alice,bob).
+false
+different_individuals(x,x).
+true
+different_individuals(x,Y).
+false
+Y
+different_individuals(x,Y)
+----------------------------------------------------------------------------------------------
+%arithmatic evaluation
+% is 
+% =:= equal
+% > greater than
+% =< less than or equal
+% =/= not equal
+
+salary(john,50000).
+salary(raj,30000).
+salary(mary,65000).
+
+bonus(Employee,Bonus) :- salary(Employee,Salary) , Bonus is Salary*0.10 .
+
+same_salary(E1,E2) :- salary(E1,S1) , salary(E2,S2) , S1 =:= S2. 
+
+earns_more_than(Employee,Threshold) :- salary(Employee,Salary) , Salary > Threshold.
+
+earns_less_or_equal(Employee,Limit) :- salary(Employee,Salary) , Salary =< Limit.
+
+salary_different(E1,E2) :- salary(E1,S1) , salary(E2,S2) , S1 =\= S2.
+
+-------------------------------------
+bonus(john,Bonus).
+Bonus = 5000.0
+bonus(john,50000).
+false
+bonus(john,X).
+X = 5000.0
+bonus(Y,X).
+X = 5000.0,
+Y = john
+X = 3000.0,
+Y = raj
+X = 6500.0,
+Y = mary
+bonus(Y,5000).
+false
+same_salary(X,Y).
+X = Y, Y = john
+X = Y, Y = raj
+X = Y, Y = mary
+earns_more_than(X,50000).
+X = mary
+earns_less_or_equal(X,50000).
+X = john
+X = raj
+false
+salary_different(X,Y).
+X = john,
+Y = raj
+X = john,
+Y = mary
+X = raj,
+Y = john
+X = raj,
+Y = mary
+X = mary,
+Y = john
+X = mary,
+Y = raj
+false
+----------------------------------------------------------------------------------------
+%write(x)
+%nl
+%read(X)
+
+greet_user :- write('what is your name? ') , nl , read(Name) ,  write('Hello, '),write(Name) , write('!'),nl.
+greet_user_with_age :- write('what is your name? ') , nl , read(Name) , write('what is your age? ') , nl , read(Age), write('Hello, '),write(Name) , write( ' !'),
+                      (Age>=18,write(' you are adult , You are '),write(Age));
+                      (Age<18,write(' you are child, You are '),write(Age)),nl.
+greet_user.
+what is your name?
+Pabasara
+Hello, _610!
+1true
+greet_user.
+what is your name?
+12
+Hello, 12!
+1true
+greet_user_with_age.
+what is your name?
+pabasara
+what is your age?
+24
+Hello, pabasara!your are adult24
+1true
+Next101001,000 Stop
+greet_user_with_age.
+what is your name?
+paba
+what is your age?
+12
+Hello, paba!
+Arguments are not sufficiently instantiated
+In:
+   [2] _1998<18
+   [1] greet_user_with_age at  line 5
+greet_user_with_age.
+what is your name?
+damayanthi
+what is your age?
+65
+Hello, damayanthi! you are adult , You are 65
+1true
+Arguments are not sufficiently instantiated
+In:
+   [2] _1662<18
+   [1] greet_user_with_age at  line 5
+greet_user_with_age.
+
+
